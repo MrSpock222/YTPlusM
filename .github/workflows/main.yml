@@ -122,15 +122,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate-inputs:
+  check-inputs:
     runs-on: ubuntu-latest
     steps:
-      - name: Validate inputs
-        if: ${{ inputs.enable_ytpf == 'true' && inputs.enable_ytpfBETA == 'true' }}
+      - name: Check for conflicting inputs
         run: |
-          echo "❌ Error: you can't select both inputs 'Integrate YTPlaybackFix' e 'Integrate YTPlaybackFix beta'."
-          echo "Please select only one of them."
-          exit 1
+          if [[ "${{ inputs.enable_ytpf }}" == "true" && "${{ inputs.enable_ytpfBETA }}" == "true" ]]; then
+            echo "::error::You can't select both inputs 'Integrate YTPlaybackFix' and 'Integrate YTPlaybackFix beta' at the same time. Please select only one of them."
+            exit 1
+          fi
           
   build-tweaks:
     uses: ./.github/workflows/_build_tweaks.yml
