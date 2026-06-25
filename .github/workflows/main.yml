@@ -81,6 +81,12 @@ on:
        required: true
        default: false
 
+      enable_ytpfBETA:
+       description: "Integrate my YTPlaybackFix but latest beta version, at your own risk... (YTPlusM)"
+       type: boolean
+       required: true
+       default: false
+
       ipa_url:
         description: "URL to the decrypted IPA file"
         default: ""
@@ -132,6 +138,7 @@ jobs:
       enable_VolumeBoostYT: ${{ inputs.enable_VolumeBoostYT }}
       enable_YouGetCaption: ${{ inputs.enable_YouGetCaption }}
       enable_ytpf: ${{ inputs.enable_ytpf }}
+      enable_ytpfBETA: ${{ inputs.enable_ytpfBETA }}
       tweak_version: ${{ inputs.tweak_version }}
 
 
