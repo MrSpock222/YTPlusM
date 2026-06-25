@@ -68,6 +68,11 @@ on:
         required: true
         default: false
 
+      enable_ytpfBETA:
+        type: boolean
+        required: true
+        default: false
+
       tweak_version:
         type: string
         required: false
@@ -232,6 +237,10 @@ jobs:
       - name: Clone YTPlaybackFix
         if: ${{ inputs.enable_ytpf }}
         run: git clone --quiet --depth=1 https://github.com/Mark02-2012/YTPlaybackFix.git
+
+      - name: Clone YTPlaybackFix
+        if: ${{ inputs.enable_ytpfBETA }}
+        run: git clone --quiet --depth=1 -b beta-testing https://github.com/Mark02-2012/YTPlaybackFix.git
         
       - name: Build YouPiP
         if: ${{ inputs.enable_youpip }}
