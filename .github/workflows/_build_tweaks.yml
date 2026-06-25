@@ -238,7 +238,7 @@ jobs:
         if: ${{ inputs.enable_ytpf }}
         run: git clone --quiet --depth=1 https://github.com/Mark02-2012/YTPlaybackFix.git
 
-      - name: Clone YTPlaybackFix
+      - name: Clone YTPlaybackFix beta branch
         if: ${{ inputs.enable_ytpfBETA }}
         run: git clone --quiet --depth=1 -b beta-testing https://github.com/Mark02-2012/YTPlaybackFix.git
         
@@ -331,6 +331,12 @@ jobs:
         run: |
           cd YTPlaybackFix && make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
           mv packages/*.deb ../ytpf.deb
+
+      - name: Build YTPlaybackfix beta
+        if: ${{ inputs.enable_ytpfBETA }}
+        run: |
+          cd YTPlaybackFix && make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          mv packages/*.deb ../ytpfbeta.deb
 
       - name: Clone Open in YouTube (Safari extension)
         run: |
