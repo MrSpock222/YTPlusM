@@ -232,21 +232,7 @@ jobs:
 
       - name: Clone YTLowContrastMode
         if: ${{ inputs.enable_YTLCM }}
-        run: git clone --quiet --depth=1 https://github.com/arichornlover/YTLowContrastMode.git
-
-      - name: Patch YTLowContrastMode
-        if: ${{ inputs.enable_YTLCM }}
-        run: |
-         cd YTLowContrastMode
-          echo '#import <UIKit/UIKit.h>' > patch.txt
-          echo '#define IS_ENABLED(k) YES' >> patch.txt
-          echo '@interface YTQTMButton : UIButton' >> patch.txt
-          echo '- (void)setTintColor:(id)color;' >> patch.txt
-          echo '@end' >> patch.txt
-          echo '@interface YTCollectionViewCell : UICollectionViewCell' >> patch.txt
-          echo '@end' >> patch.txt
-          cat Tweak.xm >> patch.txt
-          mv patch.txt Tweak.xm
+        run: git clone --quiet --depth=1 https://github.com/Mark02-2012/YTLowContrastMode.git
 
       - name: Clone VolumeBoostYT
         if: ${{ inputs.enable_VolumeBoostYT }}
