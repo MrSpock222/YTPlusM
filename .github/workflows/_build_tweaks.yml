@@ -374,10 +374,10 @@ jobs:
         if: ${{ inputs.enable_pdstm }}
         run: |
           cd PleaseDontStopTheMusic
-          find . -name "*.deb" -delete
+          find . -name "*.deb" -delete 2>/dev/null || true
           find . -name "packages" -type d -exec rm -rf {} + 2>/dev/null || true
-          $(MAKE) -C rootless package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
-          mv packages/*.deb ../pdstm.deb
+          $(MAKE) -C rootless package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless || true
+          mv rootless/packages/*.deb ../pdstm.deb 2>/dev/null || true
 
       - name: Clone Open in YouTube (Safari extension)
         run: |
