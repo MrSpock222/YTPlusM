@@ -373,7 +373,9 @@ jobs:
       - name: Build PleaseDontStopTheMusic
         if: ${{ inputs.enable_pdstm }}
         run: |
-          cd PleaseDontStopTheMusic && make clean
+          cd PleaseDontStopTheMusic
+          find . -name "*.deb" -delete
+          find . -name "packages" -type d -exec rm -rf {} + 2>/dev/null || true
           $(MAKE) -C rootless package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
           mv packages/*.deb ../pdstm.deb
 
