@@ -373,7 +373,8 @@ jobs:
       - name: Build PleaseDontStopTheMusic
         if: ${{ inputs.enable_pdstm }}
         run: |
-          cd PleaseDontStopTheMusic && make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          cd PleaseDontStopTheMusic && make clean
+          $(MAKE) -C rootless package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
           mv packages/*.deb ../pdstm.deb
 
       - name: Clone Open in YouTube (Safari extension)
