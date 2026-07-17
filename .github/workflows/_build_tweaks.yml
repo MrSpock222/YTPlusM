@@ -196,8 +196,8 @@ jobs:
 
            dpkg-deb --build ytplus ytplus.deb
            
-           test -f YTLite.dylib || { echo "Missing dylib"; exit 1; }
-           test -d YTLite.bundle || { echo "Missing bundle"; exit 1; }
+           test -f ytplus/Library/MobileSubstrate/DynamicLibraries/YTLite.dylib
+           test -d "ytplus/Library/Application Support/YTLite.bundle"
 
       - name: Download YouTube Plus (by URL)
         if: ${{ inputs.tweak_url != '' }}
