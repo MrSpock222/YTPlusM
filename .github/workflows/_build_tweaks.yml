@@ -149,9 +149,55 @@ jobs:
           mv *.sdk $THEOS/sdks
 
       - name: Download YouTube Plus (by ver)
+        if: ${{ inputs.tweak_url == '' }}
         run: |
-          deb_url="https://github.com/Mark02-2012/YTPlusM-DIY/releases/download/YTPlusVersions/com.dvntm.ytlite_${{ inputs.tweak_version }}_iphoneos-arm.deb"
-          wget "$deb_url" --no-verbose -O ytplus.deb
+          BASE_URL="https://github.com/Mark02-2012/YTPlusM/releases/download/YTPlusVersions"
+
+          if [[ "${{ inputs.tweak_version }}" == "5.2.2" ]]; then
+           echo "Downloading YTLite 5.2.2 dylib and bundle..."
+
+           wget "${BASE_URL}/YTLite-5.2.2-Cracked-Zarzel.dylib" --no-verbose -O YTLite.dylib
+           wget "${BASE_URL}/YTLite.bundle.zip" --no-verbose -O YTLite.bundle.zip
+
+           unzip -q YTLite.bundle.zip
+           rm YTLite.bundle.zip
+
+          else
+           echo "Downloading YTLite ${{ inputs.tweak_version }}..."
+
+           wget "${BASE_URL}/com.dvntm.ytlite_${{ inputs.tweak_version }}_iphoneos-arm.deb" \
+           --no-verbose \
+           -O ytplus.deb
+          fi
+
+      - name: Build YTLite 5.2.2 package
+        if: ${{ inputs.tweak_version == '5.2.2' }}
+        run: |
+           mkdir -p ytplus/DEBIAN
+           mkdir -p ytplus/Library/MobileSubstrate/DynamicLibraries
+           mkdir -p ytplus/Library/Application\ Support
+
+           mv YTLite.dylib ytplus/Library/MobileSubstrate/DynamicLibraries/
+           mv YTLite.bundle ytplus/Library/Application\ Support/
+
+           cat > ytplus/DEBIAN/control <<EOF
+           Package: com.dvntm.ytlite
+           Name: YTLite
+           Depends: mobilesubstrate
+           Version: 0.0.1
+           Architecture: iphoneos-arm
+           Description: Lightweight YouTube Enhancer
+           Maintainer: dvntm
+           Author: dvntm
+           Section: Tweaks
+           Icon: https://raw.githubusercontent.com/dayanch96/icons/main/ytlite.png
+           SileoDepiction: https://raw.githubusercontent.com/dayanch96/icons/main/ytlite.json
+           EOF
+
+           dpkg-deb --build ytplus ytplus.deb
+           
+           test -f YTLite.dylib || { echo "Missing dylib"; exit 1; }
+           test -d YTLite.bundle || { echo "Missing bundle"; exit 1; }
 
       - name: Download YouTube Plus (by URL)
         if: ${{ inputs.tweak_url != '' }}
